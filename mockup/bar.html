@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="d3.min.js"></script>
+		<script type="text/javascript" src="topojson.min.js"></script>
+
+		<style>
+			body {
+				background:#AAA
+			}
+			.barpair .text_head {
+				fill:white;
+				font:18px sans-serrif;
+				text-anchor:end;
+			}
+			.barpair .text_tail {
+				fill:white;
+				font:12px sand-serrif;
+				text-anchor:start;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			var bar_width = 500;
+			var bar_height = 20;
+			var bar_border = 150;
+			var color_upper = "#666"
+			var color_lower = "#333"
+			
+			addBarPair(d3.select("body"), "GDP per capita ($)", 10000, 8000);
+
+			function addBarPair(root, text, data_upper, data_lower) {
+				var svg = root.append("svg")
+					.attr("class", "barpair")
+					.attr("width", bar_width + bar_border + 50)
+					.attr("height", bar_height*2);
+				var max = Math.max(data_upper, data_lower);
+				svg.append("rect")
+					.attr("width", (data_upper/max)*bar_width)
+					.attr("height", bar_height)
+					.attr("fill", color_upper)
+					.attr("x", bar_border);
+				svg.append("rect")
+					.attr("width", (data_lower/max)*bar_width)
+					.attr("height", bar_height)
+					.attr("fill", color_lower)
+					.attr("x", bar_border)
+					.attr("y", bar_height);
+				svg.append("text")
+					.attr("class", "text_head")
+					.attr("x", bar_border - 5)
+					.attr("y", bar_height + 5)
+					.text(text);
+				svg.append("text")
+					.attr("class", "text_tail")
+					.attr("x", bar_border + bar_width + 5)
+					.attr("y", bar_height - 6)
+					.text(data_upper);
+				svg.append("text")
+					.attr("class", "text_tail")
+					.attr("x", bar_border + bar_width + 5)
+					.attr("y", bar_height*2 - 6)
+					.text(data_lower);
+			}
+		</script>
+	</body>
+</html>
+
