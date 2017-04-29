@@ -3,7 +3,7 @@ import {
     SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT,
     REQUEST_POSTS, RECEIVE_POSTS,
     SELECT_ORIGIN, SELECT_DEST, SELECT_YEAR,
-    RECEIVE_COUNTRY_POSITIONS
+    RECEIVE_COUNTRY_POSITIONS, RECEIVE_MIGRATION_DATA
 } from "./actions"
 
 function selectedOptions(state = {
@@ -39,6 +39,26 @@ function countryPositions(state = {}, action) {
                 return { ...obj, [country.name]: [country.longitude, country.latitude] }
             }, {}))
 
+    default:
+        return state
+    }
+}
+
+function migrationData(state = {}, action) {
+    switch (action.type) {
+    case RECEIVE_MIGRATION_DATA:
+        // Might be mutating state...
+        return Object.assign({}, state,
+            action.migrationDataPoints.reduce((obj, dp) => {
+                if (!obj[dp.year]) {
+                    obj[dp.year] = {}
+                }
+                if (!obj[dp.year][dp.origin]) {
+                    obj[dp.year][dp.origin] = {}
+                }
+                obj[dp.year][dp.origin][dp.destination] = dp.count
+                return obj
+            }, {...state}))
     default:
         return state
     }
@@ -99,7 +119,8 @@ function postsBySubreddit(state = {}, action) {
 
 const rootReducer = combineReducers({
     selectedOptions,
-    countryPositions
+    countryPositions,
+    migrationData
 })
 
 export default rootReducer

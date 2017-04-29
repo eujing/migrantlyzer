@@ -46,6 +46,7 @@ export default class Map extends React.Component {
                 .attr("class", "route")
                 .attr("d", this.path)
                 .style({ "stroke-width": `${thicknesses[i]}px` })
+                .on("click", d => this.props.onLineClick(d))
         }
     }
 
@@ -60,6 +61,15 @@ export default class Map extends React.Component {
         }
     }
 
+    componentWillUpdate(nextProps) {
+        if (nextProps.originLongLat && nextProps.destinationLongLats && nextProps.thicknesses) {
+            this.addArc(
+                nextProps.originLongLat,
+                nextProps.destinationLongLats,
+                nextProps.thicknesses)
+        }
+    }
+
     render() {
         return <div id="map"></div>
     }
@@ -70,5 +80,6 @@ Map.propTypes = {
     mapHeight: PropTypes.number.isRequired,
     originLongLat: PropTypes.arrayOf(PropTypes.number),
     destinationLongLats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-    thicknesses: PropTypes.arrayOf(PropTypes.number)
+    thicknesses: PropTypes.arrayOf(PropTypes.number),
+    onLineClick: PropTypes.func.isRequired
 }

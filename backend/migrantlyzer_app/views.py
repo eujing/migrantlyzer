@@ -38,5 +38,5 @@ def get_migrations(request):
 
 
         return JsonResponse(
-            serialize("json", queryset),
+            serialize("json", queryset, use_natural_foreign_keys=True),
             safe=False)

@@ -30,8 +30,6 @@ function receiveCountryPositions(countries) {
 
 export function fetchCountryPositions() {
     return (dispatch) => {
-        // dispatch(requestPosts(subreddit))
-
         return fetch("http://localhost:8000/migrantlyzer/country")
             .then(r => r.json())
             .then((jsonS) => {
@@ -41,6 +39,21 @@ export function fetchCountryPositions() {
     }
 }
 
+export const RECEIVE_MIGRATION_DATA = "RECEIVE_MIGRATION_DATA"
+function receiveMigrationData(migrationDataPoints) {
+    return { type: RECEIVE_MIGRATION_DATA, migrationDataPoints }
+}
+
+export function fetchMigrationData(country, year) {
+    return (dispatch) => {
+        return fetch(`http://localhost:8000/migrantlyzer/migration?country=${country}&year=${year}`)
+            .then(r => r.json())
+            .then((jsonS) => {
+                const json = JSON.parse(jsonS)
+                dispatch(receiveMigrationData(json.map(row => row.fields)))
+            })
+    }
+}
 
 // Example actions for reddit stuff
 export const SELECT_SUBREDDIT = "SELECT_SUBREDDIT"
