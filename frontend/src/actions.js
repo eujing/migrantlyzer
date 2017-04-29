@@ -1,5 +1,63 @@
 import fetch from "isomorphic-fetch"
 
+export const SELECT_ORIGIN = "SELECT_ORIGIN"
+export function selectOrigin(country, year) {
+    return {
+        type: SELECT_ORIGIN,
+        country,
+        year
+    }
+}
+
+export const SELECT_DEST = "SELECT_DEST"
+export function selectDest(country, year) {
+    return {
+        type: SELECT_DEST,
+        country,
+        year
+    }
+}
+
+export const REQUEST_ORIGIN_EMMIGRATION = "REQUEST_ORIGIN_EMMIGRATION"
+export function requestOriginEmmigration(country, year) {
+    return {
+        type: REQUEST_ORIGIN_EMMIGRATION,
+        country,
+        year
+    }
+}
+
+export const RECEIVE_ORIGIN_EMMIGRATION = "RECEIVE_ORIGIN_EMMIGRATION"
+export function receiveOriginEmmigration(country, year, json) {
+    return {
+        type: RECEIVE_ORIGIN_EMMIGRATION,
+        country,
+        year,
+        data: json
+    }
+}
+
+export const REQUEST_COMPARISON = "REQUEST_COMPARISON"
+export function requestComparison(origin, destination, year) {
+    return {
+        type: REQUEST_COMPARISON,
+        origin,
+        destination,
+        year
+    }
+}
+
+export const RECEIVE_COMPARISON = "RECEIVE_COMPARISON"
+export function receiveComparison(origin, destination, year, json) {
+    return {
+        type: RECEIVE_COMPARISON,
+        origin,
+        destination,
+        year,
+        data: json
+    }
+}
+
 // Example actions for reddit stuff
 export const SELECT_SUBREDDIT = "SELECT_SUBREDDIT"
 

@@ -24,7 +24,7 @@ if (process.env.NODE_ENV !== "production") {
     require("./index.html") // eslint-disable-line global-require
 }
 
-require("./styles.css")
+// require("./styles.css")
 
 // Middleware for redux
 const loggerMiddleware = createLogger()
