@@ -4,25 +4,11 @@ import React from "react"
 import { AppContainer } from "react-hot-loader"
 import thunkMiddleware from "redux-thunk"
 import { createLogger } from "redux-logger"
+import { Provider } from "react-redux"
 import { createStore, applyMiddleware } from "redux"
-import {} from "./actions"
+import { fetchCountryPositions, selectOrigin } from "./actions"
 import rootReducer from "./reducers"
 import App from "./components/App.jsx"
-
-// For hot module reloading
-if (process.env.NODE_ENV !== "production") {
-    if (module.hot) {
-        module.hot.accept("./components/App", () => {
-            ReactDOM.render(
-                <AppContainer>
-                    <App />
-                </AppContainer>,
-                document.getElementById("root"))
-        })
-        module.hot.accept()
-    }
-    require("./index.html") // eslint-disable-line global-require
-}
 
 require("./styles.css")
 
@@ -33,14 +19,35 @@ const store = createStore(rootReducer,
         thunkMiddleware,
         loggerMiddleware))
 
+const render = (Component) => {
+    ReactDOM.render(
+        <AppContainer>
+            <Provider store={store}>
+                <Component />
+            </Provider>
+        </AppContainer>,
+        document.getElementById("root"))
+}
+
+// For hot module reloading
+if (process.env.NODE_ENV !== "production") {
+    if (module.hot) {
+        module.hot.accept("./components/App", () => render(App))
+        module.hot.accept()
+    }
+    require("./index.html") // eslint-disable-line global-require
+}
+
 const unsubscribe = store.subscribe(() => {
     console.log(store.getState())
 })
 
-ReactDOM.render(
-    <AppContainer>
-        <App />
-    </AppContainer>,
-    document.getElementById("root"))
+
+store.dispatch(fetchCountryPositions()).then(() => {
+    console.log("Country Positions fetched!")
+
+    render(App)
+})
+
 
 unsubscribe()

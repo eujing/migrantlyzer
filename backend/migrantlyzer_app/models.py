@@ -13,6 +13,7 @@ class Index(models.Model):
     name = models.CharField(max_length=100)
     source = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    max_value = models.FloatField()
 
 class IndexDataPoint(models.Model):
     value = models.FloatField()

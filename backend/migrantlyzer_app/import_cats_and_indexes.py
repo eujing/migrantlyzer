@@ -8,7 +8,7 @@ DATA = {
         {"name": "GDP, per capita", "source": "World Bank"},
         {"name": "Unemployment, % of total labor force", "source": "World Bank"}],
     "Social": [
-        {"name": "Intentional Homicides, per 100,000 people", "source": "World Bank"},
+        {"name": "Homicides, per 100,000 people", "source": "World Bank"},
         {"name": "Human Freedom Index, HFI", "source": "Cato Institute"},
         {"name": "Human Development Index, HDI", "source": "UN Development Program"},
         {"name": "Life Expectancy, years", "source": "World Bank"},
@@ -22,6 +22,7 @@ DATA = {
         {"name": "Happy Planet Index", "source": "Happy Planet Index"}
         ]
 }
+MAX_VALUE = 0.0
 
 def import_data():
     for cat_name, indexes in DATA.items():
@@ -32,7 +33,7 @@ def import_data():
         for index in indexes:
             print("\t{}".format(index["name"]))
             cat.index_set.create(
-                name=index["name"], source=index["source"])
+                name=index["name"], source=index["source"], max_value=MAX_VALUE)
 
 def clear_data():
     Category.objects.all().delete()

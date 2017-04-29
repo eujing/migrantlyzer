@@ -14,8 +14,8 @@ def testJson(request):
 
 def get_countries(request):
     return JsonResponse(
-        serialize("json", models.Country.objects.all()),
-        safe=False)
+            serialize("json", models.Country.objects.all()),
+        safe=False, content_type='application/json')
 
 def get_categories(request):
     return JsonResponse(

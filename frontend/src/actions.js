@@ -18,45 +18,29 @@ export function selectDest(country, year) {
     }
 }
 
-export const REQUEST_ORIGIN_EMMIGRATION = "REQUEST_ORIGIN_EMMIGRATION"
-export function requestOriginEmmigration(country, year) {
-    return {
-        type: REQUEST_ORIGIN_EMMIGRATION,
-        country,
-        year
+export const SELECT_YEAR = "SELECT_YEAR"
+export function selectYear(year) {
+    return { type: SELECT_YEAR, year }
+}
+
+export const RECEIVE_COUNTRY_POSITIONS = "RECEIVE_COUNTRY_POSITIONS"
+function receiveCountryPositions(countries) {
+    return { type: RECEIVE_COUNTRY_POSITIONS, countries }
+}
+
+export function fetchCountryPositions() {
+    return (dispatch) => {
+        // dispatch(requestPosts(subreddit))
+
+        return fetch("http://localhost:8000/migrantlyzer/country")
+            .then(r => r.json())
+            .then((jsonS) => {
+                const json = JSON.parse(jsonS)
+                dispatch(receiveCountryPositions(json.map(row => row.fields)))
+            })
     }
 }
 
-export const RECEIVE_ORIGIN_EMMIGRATION = "RECEIVE_ORIGIN_EMMIGRATION"
-export function receiveOriginEmmigration(country, year, json) {
-    return {
-        type: RECEIVE_ORIGIN_EMMIGRATION,
-        country,
-        year,
-        data: json
-    }
-}
-
-export const REQUEST_COMPARISON = "REQUEST_COMPARISON"
-export function requestComparison(origin, destination, year) {
-    return {
-        type: REQUEST_COMPARISON,
-        origin,
-        destination,
-        year
-    }
-}
-
-export const RECEIVE_COMPARISON = "RECEIVE_COMPARISON"
-export function receiveComparison(origin, destination, year, json) {
-    return {
-        type: RECEIVE_COMPARISON,
-        origin,
-        destination,
-        year,
-        data: json
-    }
-}
 
 // Example actions for reddit stuff
 export const SELECT_SUBREDDIT = "SELECT_SUBREDDIT"

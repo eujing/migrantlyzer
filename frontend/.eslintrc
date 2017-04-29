@@ -16,6 +16,7 @@
         "no-await-in-loop": 1,
         "quotes": [2, "double"],
         "indent": [2, 4],
+        "arrow-body-style": ["error", "as-needed"],
         "react/jsx-uses-react": "error",
         "react/jsx-uses-vars": "error",
         "import/extensions": [2, ".js", ".jsx"]
