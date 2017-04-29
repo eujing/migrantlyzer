@@ -34,6 +34,9 @@ module.exports = {
             test: /\.jsx$/,
             loaders: ["babel-loader"],
             include: path.join(__dirname, "src")
+        }, {
+            test: /\.json$/,
+            loaders: ["json-loader"]
         }]
     },
     resolve: {

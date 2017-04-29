@@ -6,7 +6,7 @@ export default class Category extends React.Component {
         return (
             <ul>
                 <h1>Category</h1>
-                <Factor />
+                {/* <Factor /> */}
             </ul>
         )
     }
