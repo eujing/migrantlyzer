@@ -8,4 +8,16 @@
     font:12px sand-serrif;
     text-anchor:start;
 }
-
+#map {
+    height:95%;
+}
+#outlines {
+    fill:#333;
+    stroke:#000;
+    stroke-linejoin:round;
+    stroke-linecap:round;
+}
+.route {
+    fill:none;
+    stroke:red;
+}

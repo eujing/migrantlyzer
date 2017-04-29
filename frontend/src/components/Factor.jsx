@@ -46,7 +46,6 @@ export default class Factor extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Im called!")
         this.addBarPair(".bar-chart", this.props.name, this.props.origin_value, this.props.destination_value)
     }
 
