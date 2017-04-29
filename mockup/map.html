@@ -24,6 +24,10 @@
 				stroke-linejoin:round;
 				stroke-linecap:round;
 			}
+			.route {
+				fill:none;
+				stroke:#FFF;
+			}
 		</style>
 	</head>
 	<body>
@@ -41,10 +45,9 @@
 				.attr("width", width)
 				.attr("height", width * map_height / map_width);
 			
-			var g = svg.append("g");
+			var outline_group = svg.append("g");
 			d3.json("map.json", function(error, outlines) {
-				g.append("g")
-					.attr("id", "outlines")
+				outline_group.attr("id", "outlines")
 					.selectAll("path")
 					.data(topojson.feature(outlines, outlines.objects.countries).features)
 					.enter()
@@ -52,6 +55,18 @@
 					.attr("id", function(d) {return d.id})
 					.attr("d", path);
 			});
+
+			var arc_group = svg.append("g");
+			var origin = [-3.44, 55.38];
+			var destination = [[-95.71, 37.09], [46.87,-18.77], [103.82,1.35]];
+			var width = [4, 1, 2];
+			for (i = 0; i < 3; i++) {
+				arc_group.append("path")
+					.datum({type:"LineString", coordinates:[origin, destination[i]]})
+					.attr("class", "route")
+					.attr("d", path)
+					.style({'stroke-width':width[i] + "px"});
+			}
 
 			$(window).resize(function() {
 				width = $("#map").width();
