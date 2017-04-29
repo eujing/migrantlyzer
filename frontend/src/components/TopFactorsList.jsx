@@ -7,7 +7,7 @@ export default class TopFactorsList extends React.Component {
             <div>
                 <p>TopFactorsList</p>
                 <ul>
-                    <Factor />
+                    <Factor name={"Test"} origin_value={10} destination_value={5}/>
                 </ul>
             </div>)
     }
