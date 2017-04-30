@@ -13,7 +13,7 @@ export default class MigrationBar extends React.Component {
 		var immigration = this.props.immigration;
 
         if (!origin || !destination) {
-            return <h1>No Data Yet</h1>
+            return <Row></Row>
         }
 
         return (

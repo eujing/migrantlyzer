@@ -16,7 +16,7 @@ export default class CategoryList extends React.Component {
         console.log(this.props)
 
         if (!origin || !destination) {
-            return <h1>No data yet!</h1>
+            return <Row><h1>Index Categories</h1></Row>
         }
 
         var originData = indexData[origin];
@@ -38,7 +38,7 @@ export default class CategoryList extends React.Component {
 
         return (
             <Row>
-                <p>CategoryList</p>
+                <h1>Index Categories</h1>
                 <ul>
                     {
                         categoryList.map(function(value) {
