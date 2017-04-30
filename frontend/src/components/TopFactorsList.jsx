@@ -1,5 +1,5 @@
 import React from "react"
-import { Row } from "react-bootstrap"
+import { Row, Col } from "react-bootstrap"
 import PropTypes from "prop-types"
 import Factor from "./Factor.jsx"
 
@@ -96,8 +96,8 @@ export default class TopFactorsList extends React.Component {
 
         if (!indexData || !origin || !destination) {
             return <Row>
-                <h1>Top Pull Factors</h1>
-                <h1>Top Push Factors</h1>
+                <Col xs={6} className={"text-center"}><h1>Top Pull Factors</h1></Col>
+                <Col xs={6} className={"text-center"}><h1>Top Push Factors</h1></Col>
             </Row>
         }
 
@@ -111,7 +111,7 @@ export default class TopFactorsList extends React.Component {
 
         return (
             <Row>
-                <div>
+                <Col xs={6} className={"text-center"}>
                     <h1>Top Pull Factors</h1>
                     <ul>
                         {
@@ -122,8 +122,8 @@ export default class TopFactorsList extends React.Component {
                             })
                         }
                     </ul>
-                </div>
-                <div>
+                </Col>
+                <Col xs={6} className={"text-center"}>
                     <h1>Top Push Factors</h1>
                     <ul>
                         {
@@ -135,7 +135,7 @@ export default class TopFactorsList extends React.Component {
                             })
                         }
                     </ul>
-                </div>
+                </Col>
             </Row>
             )
     }

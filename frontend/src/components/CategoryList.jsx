@@ -1,5 +1,5 @@
 import React from "react"
-import { Row } from "react-bootstrap"
+import { Row, Col } from "react-bootstrap"
 import PropTypes from "prop-types"
 import Category from "./Category.jsx"
 
@@ -16,7 +16,9 @@ export default class CategoryList extends React.Component {
         console.log(this.props)
 
         if (!origin || !destination) {
-            return <Row><h1>Index Categories</h1></Row>
+            return <Row>
+                <Col xs={12} className={"text-center"}><h1>Index Categories</h1></Col>
+            </Row>
         }
 
         var originData = indexData[origin];
@@ -38,24 +40,26 @@ export default class CategoryList extends React.Component {
 
         return (
             <Row>
-                <h1>Index Categories</h1>
-                <ul>
-                    {
-                        categoryList.map(function(value) {
-                            return (
-                                <Category 
-                                    origin={origin}
-                                    destination={destination}
-                                    indexData={indexData}
-                                    category={value}
-                                    categoryMap={categoryMap}
-                                    year={year}
-                                />
+                <Col xs={12} className="text-center">
+                    <h1>Index Categories</h1>
+                    <ul>
+                        {
+                            categoryList.map(function(value) {
+                                return (
+                                    <Category 
+                                        origin={origin}
+                                        destination={destination}
+                                        indexData={indexData}
+                                        category={value}
+                                        categoryMap={categoryMap}
+                                        year={year}
+                                    />
 
-                                )
-                        })
-                    }
-                </ul>
+                                    )
+                            })
+                        }
+                    </ul>
+                </Col>
             </Row>)
     }
 }

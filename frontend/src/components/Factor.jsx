@@ -61,7 +61,12 @@ export default class Factor extends React.Component {
     }
 
     render() {
-        return <div id={this.uid}></div>
+        return (
+            <div>
+                <div id={this.uid}></div>
+                <div style={{height: "28px"}}></div>
+            </div>
+        )
     }
 }
 
