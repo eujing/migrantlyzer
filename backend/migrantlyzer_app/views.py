@@ -26,7 +26,7 @@ def get_indexes(request):
     if request.method == "GET":
 
         return JsonResponse(
-            serialize("json", models.Index.objects.all()),
+            serialize("json", models.Index.objects.all(), use_natural_foreign_keys=True),
             safe=False)
 
 def get_migrations(request):

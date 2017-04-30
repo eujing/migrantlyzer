@@ -1,5 +1,5 @@
 import React from "react"
-import MigrationBar from "./MigrationBar.jsx"
+import MigrationBarContainer from "../containers/MigrationBarContainer.jsx"
 import TopFactorsList from "./TopFactorsList.jsx"
 import CategoryList from "./CategoryList.jsx"
 
@@ -21,7 +21,6 @@ export default class DataDisplay extends React.Component {
 		var exclusiveData = {}
 		exclusiveData[origin] = oldData[origin];
 		exclusiveData[destination] = oldData[destination];
-		console.log("inside");
 		return exclusiveData;
 	}
 
@@ -42,12 +41,7 @@ export default class DataDisplay extends React.Component {
         return (
             <div>
                 <h1>DataDisplay</h1>
-                <MigrationBar 
-                	origin={originCountry}
-                	destination={destinationCountry}
-                	immigration={immigration}
-                	emigration={emigration}
-                	/>
+                <MigrationBarContainer />
                 <TopFactorsList 
                 	origin={originCountry}
                 	destination={destinationCountry}

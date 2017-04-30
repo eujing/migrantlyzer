@@ -1,8 +1,6 @@
 import { combineReducers } from "redux"
 import {
-    SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT,
-    REQUEST_POSTS, RECEIVE_POSTS,
-    SELECT_ORIGIN, SELECT_DEST, SELECT_YEAR,
+    SELECT_COUNTRY, SELECT_ORIGIN, SELECT_DEST, SELECT_YEAR,
     RECEIVE_COUNTRY_POSITIONS, RECEIVE_MIGRATION_DATA
 } from "./actions"
 
@@ -12,6 +10,22 @@ function selectedOptions(state = {
     year: 2015
 }, action) {
     switch (action.type) {
+    case SELECT_COUNTRY:
+        if (!state.origin) {
+            return Object.assign({}, state, {
+                origin: action.country
+            })
+        } else if (!state.destination) {
+            return Object.assign({}, state, {
+                destination: action.country
+            })
+        }
+
+        return Object.assign({}, state, {
+            origin: action.country,
+            destination: null
+        })
+
     case SELECT_ORIGIN:
         return Object.assign({}, state, {
             origin: action.country,
@@ -35,9 +49,7 @@ function countryPositions(state = {}, action) {
     switch (action.type) {
     case RECEIVE_COUNTRY_POSITIONS:
         return Object.assign({}, state,
-            action.countries.reduce((obj, country) => {
-                return { ...obj, [country.name]: [country.longitude, country.latitude] }
-            }, {}))
+            action.countries.reduce((obj, country) => ({ ...obj, [country.name]: [country.longitude, country.latitude] }), {}))
 
     default:
         return state
@@ -58,60 +70,7 @@ function migrationData(state = {}, action) {
                 }
                 obj[dp.year][dp.origin][dp.destination] = dp.count
                 return obj
-            }, {...state}))
-    default:
-        return state
-    }
-}
-
-// Example reducers for reddit stuff
-function selectedSubredit(state = "reactjs", action) {
-    switch (action.type) {
-    case SELECT_SUBREDDIT:
-        return action.subreddit
-    default:
-        return state
-    }
-}
-
-function posts(state = {
-    isFetching: false,
-    didInvalidate: false,
-    items: []
-}, action) {
-    switch (action.type) {
-    case INVALIDATE_SUBREDDIT:
-        return Object.assign({}, state, {
-            didInvalidate: true
-        })
-
-    case REQUEST_POSTS:
-        return Object.assign({}, state, {
-            isFetching: true,
-            didInvalidate: false
-        })
-
-    case RECEIVE_POSTS:
-        return Object.assign({}, state, {
-            isFetching: false,
-            didInvalidate: false,
-            items: action.posts,
-            lastUpdated: action.receivedAt
-        })
-
-    default:
-        return state
-    }
-}
-
-function postsBySubreddit(state = {}, action) {
-    switch (action.type) {
-    case INVALIDATE_SUBREDDIT:
-    case REQUEST_POSTS:
-    case RECEIVE_POSTS:
-        return Object.assign({}, state, {
-            [action.subreddit]: posts(state[action.subreddit], action)
-        })
+            }, { ...state }))
     default:
         return state
     }
