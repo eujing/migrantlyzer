@@ -6,18 +6,17 @@ import CategoryList from "./CategoryList.jsx"
 export default class DataDisplay extends React.Component {
 
 	constructor() {
-	  super();
-	  this.state = {
+	  	super();
+	  	this.state = {
 		  	originCountry: "Singapore",
 		  	destinationCountry: "Thailand",
 		  	migrationData: data.migrationData,
-		  	indexData: data.indexData
+		  	indexData: data.indexData,
+		  	categoryMap: categoryMap,
 	  	}
 	}
 
 	extractIndexData(origin, destination, oldData) {
-
-
 		var exclusiveData = {}
 		exclusiveData[origin] = oldData[origin];
 		exclusiveData[destination] = oldData[destination];
@@ -25,18 +24,19 @@ export default class DataDisplay extends React.Component {
 	}
 
     render() {
-    	var migrationData = this.state.migrationData;
-    	var indexData = this.state.indexData;
+    	
     	var originCountry = this.state.originCountry;
     	var destinationCountry = this.state.destinationCountry;
+		var migrationData = this.state.migrationData;
+    	var indexData = this.state.indexData;
+		var categoryMapProp = this.state.categoryMap;
+		var year = this.props.year;
+    	
 
     	var emigration = migrationData[originCountry][destinationCountry];
     	var immigration = migrationData[destinationCountry][originCountry];
 
     	var exclusiveIndexData = this.extractIndexData(originCountry, destinationCountry, indexData);
-
-
-
 
         return (
             <div>
@@ -46,13 +46,23 @@ export default class DataDisplay extends React.Component {
                 	origin={originCountry}
                 	destination={destinationCountry}
                 	exclusiveIndexData={exclusiveIndexData}
+                	year={year}
                 	/>
-                <CategoryList />
+                <CategoryList 
+                	origin={originCountry}
+                	destination={destinationCountry}
+                	exclusiveIndexData={exclusiveIndexData}
+                	categoryMap={categoryMapProp}
+                	year={year}
+                	/>
             </div>)
     }
 }
 
-
+var categoryMap = {
+	"Economic": ["GDP per Capita"],
+	"Social": ["Human Development Index", "Average PISA score"]
+}
 
 var data = 	{
 

@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 import Factor from "./Factor.jsx"
 
 export default class TopFactorsList extends React.Component {
@@ -87,26 +88,58 @@ export default class TopFactorsList extends React.Component {
 		return topPushes;
 	}
 
-
     render() {
     	var indexData = this.props.exclusiveIndexData;
     	var origin = this.props.origin;
     	var destination = this.props.destination;
     	var year = 2015;
+    	var topNumber = 2;
+    	console.log("hello");
 
     	var factorWeights = this.extractFactorWeights(indexData[origin], indexData[destination], year);
-    	var topPulls = this.extractTopNumberOfPulls(indexData[origin], indexData[destination], factorWeights, year, 2);
-    	var topPushes = this.extractTopNumberOfPushes(indexData[origin], indexData[destination], factorWeights, year, 2);
+    	var topPulls = this.extractTopNumberOfPulls(indexData[origin], indexData[destination], factorWeights, year, topNumber);
+    	var topPushes = this.extractTopNumberOfPushes(indexData[origin], indexData[destination], factorWeights, year, topNumber);
 
         return (
             <div>
                 <p>TopFactorsList</p>
-                <div>top two factors: {topPulls}</div>
-                <div>top two factors: {topPushes}</div>
-                <ul>
-                    <Factor name={"Test"} origin_value={10} destination_value={5}/>
-                </ul>
-            </div>)
+                <div>
+               		<h4>Top Pull Factors</h4>
+	                <ul>
+	                	{
+	                		topPulls.map(function(name) {
+	                			let originValue = indexData[origin][name][year]["value"];
+	                			let destinationValue = indexData[destination][name][year]["value"];
+	                			return (
+	                				<Factor name={name} origin_value={originValue} destination_value={destinationValue} />
+	                			)
+	            
+	                		})
+	                	}
+	                </ul>
+	            </div>
+	            <div>
+	            	<h4>Top Push Factors</h4>
+	            	<ul>
+	            		{
+	                		topPushes.map(function(name) {
+	                			let originValue = indexData[origin][name][year]["value"];
+	                			let destinationValue = indexData[destination][name][year]["value"];
+	                			return (
+	                				<Factor name={name} origin_value={originValue} destination_value={destinationValue} />
+	                			)
+	            
+	                		})
+	                	}
+	            	</ul>
+	            </div>
+            </div>
+            )
     }
 }
 
+TopFactorsList.propTypes = {
+    origin: PropTypes.string.isRequired,
+    destination: PropTypes.string.isRequired,
+    exclusiveIndexData: PropTypes.object.isRequired
+}
