@@ -1,6 +1,6 @@
 import { connect } from "react-redux"
 import Map from "../components/Map.jsx"
-import { fetchMigrationData, selectCountry } from "../actions"
+import { fetchMigrationData, fetchIndexData, selectCountry } from "../actions"
 
 const mapWidth = 938
 const mapHeight = 500
@@ -41,7 +41,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             console.log(countryData)
             const country = countryData.properties.name
             dispatch(fetchMigrationData(country, 2015)).then(() =>
-                dispatch(selectCountry(country)))
+                dispatch(fetchIndexData(country, 2015)).then(() =>
+                    dispatch(selectCountry(country))))
         }
     }
 }

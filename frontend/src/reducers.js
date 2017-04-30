@@ -1,7 +1,8 @@
 import { combineReducers } from "redux"
 import {
     SELECT_COUNTRY, SELECT_ORIGIN, SELECT_DEST, SELECT_YEAR,
-    RECEIVE_COUNTRY_POSITIONS, RECEIVE_MIGRATION_DATA
+    RECEIVE_COUNTRY_POSITIONS, RECEIVE_MIGRATION_DATA, RECEIVE_CATEGORY_DATA,
+    RECEIVE_INDEX_DATA
 } from "./actions"
 
 function selectedOptions(state = {
@@ -49,7 +50,8 @@ function countryPositions(state = {}, action) {
     switch (action.type) {
     case RECEIVE_COUNTRY_POSITIONS:
         return Object.assign({}, state,
-            action.countries.reduce((obj, country) => ({ ...obj, [country.name]: [country.longitude, country.latitude] }), {}))
+            action.countries.reduce((obj, country) =>
+                ({ ...obj, [country.name]: [country.longitude, country.latitude] }), {}))
 
     default:
         return state
@@ -76,10 +78,53 @@ function migrationData(state = {}, action) {
     }
 }
 
+function categories(state = {}, action) {
+    switch (action.type) {
+    case RECEIVE_CATEGORY_DATA:
+        return action.categoryData.reduce((obj, index) => {
+            return { ...obj,
+                [index.category]: [
+                    ...(obj[index.category] ? obj[index.category] : []),
+                    {
+                        name: index.name,
+                        max_value: index.max_value,
+                        source: index.source
+                    }] }
+        }, {})
+    default:
+        return state
+    }
+}
+
+function indexData(state = {}, action) {
+    switch (action.type) {
+    case RECEIVE_INDEX_DATA:
+        return action.indexDataPoints.reduce((obj, dp) => {
+            if (!obj[dp.country]) {
+                obj[dp.country] = {}
+            }
+            if (!obj[dp.country][dp.index]) {
+                obj[dp.country][dp.index] = {}
+            }
+            obj[dp.country][dp.index][dp.year] = {
+                value: dp.value,
+                rank: dp.rank
+            }
+
+            return obj
+        }, { ...state })
+
+    default:
+        return state
+    }
+}
+
 const rootReducer = combineReducers({
     selectedOptions,
     countryPositions,
-    migrationData
+    migrationData,
+    categories,
+    indexData
 })
 
 export default rootReducer

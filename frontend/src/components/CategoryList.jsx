@@ -1,4 +1,6 @@
 import React from "react"
+import { Row } from "react-bootstrap"
+import PropTypes from "prop-types"
 import Category from "./Category.jsx"
 
 export default class CategoryList extends React.Component {
@@ -11,6 +13,11 @@ export default class CategoryList extends React.Component {
 
         var categoryMap = this.props.categoryMap;
 
+        console.log(this.props)
+
+        if (!origin || !destination) {
+            return <h1>No data yet!</h1>
+        }
 
         var originData = indexData[origin];
         var destinationData = indexData[destination];
@@ -30,10 +37,9 @@ export default class CategoryList extends React.Component {
 
 
         return (
-            <div>
+            <Row>
                 <p>CategoryList</p>
                 <ul>
-                    <li>CategoryList</li>
                     {
                         categoryList.map(function(value) {
                             return (
@@ -50,6 +56,14 @@ export default class CategoryList extends React.Component {
                         })
                     }
                 </ul>
-            </div>)
+            </Row>)
     }
+}
+
+CategoryList.propTypes = {
+    exclusiveIndexData: PropTypes.object,
+    origin: PropTypes.string,
+    destination: PropTypes.string,
+    year: PropTypes.number.isRequired,
+    categoryMap: PropTypes.object,
 }

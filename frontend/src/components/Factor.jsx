@@ -2,7 +2,16 @@ import React from "react"
 import PropTypes from "prop-types"
 import d3 from "d3"
 
+let factorID = 0
+
 export default class Factor extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.uid = `bar-chart-${factorID}`
+        factorID += 1
+    }
+
     addBarPair(rootSelector, text, dataUpper, dataLower) {
         const root = d3.select(rootSelector)
 
@@ -46,14 +55,11 @@ export default class Factor extends React.Component {
     }
 
     componentDidMount() {
-        this.addBarPair(".bar-chart", this.props.name, this.props.origin_value, this.props.destination_value)
+        this.addBarPair(`#${this.uid}`, this.props.name, this.props.origin_value, this.props.destination_value)
     }
 
     render() {
-        return (
-            <div>
-                <div className="bar-chart"></div>
-            </div>)
+        return <div id={this.uid}></div>
     }
 }
 

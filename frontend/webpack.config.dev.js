@@ -37,7 +37,11 @@ module.exports = {
         }, {
             test: /\.json$/,
             loaders: ["json-loader"]
-        }]
+        }, {
+            test: /\.(eot|svg|ttf|woff|woff2)$/,
+            loader:'file-loader?name=/fonts/[name].[ext]'
+        }
+        ]
     },
     resolve: {
         extensions: [".js", ".jsx"]

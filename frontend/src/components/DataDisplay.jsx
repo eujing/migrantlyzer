@@ -1,7 +1,8 @@
 import React from "react"
+import { Row } from "react-bootstrap"
 import MigrationBarContainer from "../containers/MigrationBarContainer.jsx"
-import TopFactorsList from "./TopFactorsList.jsx"
-import CategoryList from "./CategoryList.jsx"
+import MigrationFactorsList from "../containers/MigrationFactorsList.jsx"
+import IndexCategoryList from "../containers/IndexCategoryList.jsx"
 
 export default class DataDisplay extends React.Component {
 
@@ -40,21 +41,10 @@ export default class DataDisplay extends React.Component {
 
         return (
             <div>
-                <h1>DataDisplay</h1>
+                <Row><div style={{height: "20px"}}></div></Row>
                 <MigrationBarContainer />
-                <TopFactorsList 
-                	origin={originCountry}
-                	destination={destinationCountry}
-                	exclusiveIndexData={exclusiveIndexData}
-                	year={year}
-                	/>
-                <CategoryList 
-                	origin={originCountry}
-                	destination={destinationCountry}
-                	exclusiveIndexData={exclusiveIndexData}
-                	categoryMap={categoryMapProp}
-                	year={year}
-                	/>
+                <MigrationFactorsList />
+                <IndexCategoryList />
             </div>)
     }
 }

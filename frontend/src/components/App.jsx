@@ -1,7 +1,8 @@
 import React from "react"
+import { Grid } from "react-bootstrap"
 import MigrationMap from "../containers/MigrationMap.jsx"
 import DataDisplay from "./DataDisplay.jsx"
-import YearSlider from "./YearSlider.jsx"
+import MigrationYearSlider from "../containers/MigrationYearSlider.jsx"
 
 export default class App extends React.Component {
 
@@ -19,12 +20,12 @@ export default class App extends React.Component {
     render() {
 
 
-        return (
-            <div>
+        return (    
+            <Grid id={"display"}>
                 <MigrationMap />
                 <DataDisplay year={this.state.year}/>
-                <YearSlider onClick={(e) => {this.handleClick(e)}}/>
-            </div>
+                {/*<MigrationYearSlider />*/}
+            </Grid>
         )
     }
 }

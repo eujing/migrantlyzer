@@ -1,15 +1,16 @@
 import React from "react"
+import { Row } from "react-bootstrap"
 import PropTypes from "prop-types"
 import Factor from "./Factor.jsx"
 
 export default class TopFactorsList extends React.Component {
 
 	extractFactorWeights(originData, destinationData, year) {
-		//primitively takes the difference in rank for that particular year
+		// primitively takes the difference in rank for that particular year
 		var factorsWeights = {};
 		var factorsList = Object.keys(destinationData);
 		factorsList.forEach(function(value, index) {
-			var weight = destinationData[value][year]["rank"] - originData[value][year]["rank"];
+			var weight = destinationData[value][year].rank - originData[value][year].rank;
 			factorsWeights[value] = weight;			
 			return 0;
 		})
@@ -92,54 +93,53 @@ export default class TopFactorsList extends React.Component {
     	var indexData = this.props.exclusiveIndexData;
     	var origin = this.props.origin;
     	var destination = this.props.destination;
+
+        if (!indexData || !origin || !destination) {
+            return <h1>No data yet!</h1>
+        }
+
     	var year = 2015;
     	var topNumber = 2;
-    	console.log("hello");
+    	console.log(this.props);
 
     	var factorWeights = this.extractFactorWeights(indexData[origin], indexData[destination], year);
     	var topPulls = this.extractTopNumberOfPulls(indexData[origin], indexData[destination], factorWeights, year, topNumber);
     	var topPushes = this.extractTopNumberOfPushes(indexData[origin], indexData[destination], factorWeights, year, topNumber);
 
         return (
-            <div>
-                <p>TopFactorsList</p>
+            <Row>
                 <div>
-               		<h4>Top Pull Factors</h4>
-	                <ul>
-	                	{
-	                		topPulls.map(function(name) {
-	                			let originValue = indexData[origin][name][year]["value"];
-	                			let destinationValue = indexData[destination][name][year]["value"];
-	                			return (
-	                				<Factor name={name} origin_value={originValue} destination_value={destinationValue} />
-	                			)
-	            
-	                		})
-	                	}
-	                </ul>
-	            </div>
-	            <div>
-	            	<h4>Top Push Factors</h4>
-	            	<ul>
-	            		{
-	                		topPushes.map(function(name) {
-	                			let originValue = indexData[origin][name][year]["value"];
-	                			let destinationValue = indexData[destination][name][year]["value"];
-	                			return (
-	                				<Factor name={name} origin_value={originValue} destination_value={destinationValue} />
-	                			)
-	            
-	                		})
-	                	}
-	            	</ul>
-	            </div>
-            </div>
+                    <h4>Top Pull Factors</h4>
+                    <ul>
+                        {
+                            topPulls.map(function(name) {
+                                let originValue = indexData[origin][name][year]["value"];
+                                let destinationValue = indexData[destination][name][year]["value"];
+                                return <Factor name={name} origin_value={originValue} destination_value={destinationValue} />
+                            })
+                        }
+                    </ul>
+                </div>
+                <div>
+                    <h4>Top Push Factors</h4>
+                    <ul>
+                        {
+                            topPushes.map(function(name) {
+                                let originValue = indexData[origin][name][year]["value"];
+                                let destinationValue = indexData[destination][name][year]["value"];
+                                
+                                return <Factor name={name} origin_value={originValue} destination_value={destinationValue} />
+                            })
+                        }
+                    </ul>
+                </div>
+            </Row>
             )
     }
 }
 
 TopFactorsList.propTypes = {
-    origin: PropTypes.string.isRequired,
-    destination: PropTypes.string.isRequired,
-    exclusiveIndexData: PropTypes.object.isRequired
+    origin: PropTypes.string,
+    destination: PropTypes.string,
+    exclusiveIndexData: PropTypes.object
 }
