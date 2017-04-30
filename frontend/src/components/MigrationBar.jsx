@@ -3,16 +3,24 @@ import PropTypes from "prop-types"
 
 export default class MigrationBar extends React.Component {
 
+	
+
     render() {
+
+	   	var origin = this.props.origin;
+		var emigration = this.props.emigration;
+		var destination = this.props.destination;
+		var immigration = this.props.immigration;
+
         return (
             <div>
 	            <p>MigrationBar</p>
 	            	<div>
 	              		<div>
-	              			{this.props.origin}
+	              			{origin}
 	              		</div>
 	              		<div>
-	              			{this.props.emigration}
+	              			{emigration}
 	              		</div>
 	            	</div>
 	            	<div>
@@ -20,10 +28,10 @@ export default class MigrationBar extends React.Component {
 	            	</div>
 	            	<div>
 	            		<div>
-	            			{this.props.destination}
+	            			{destination}
 	            		</div>
 	            		<div>
-	            			{this.props.immigration}
+	            			{immigration}
 	            		</div>
 	            	</div>
             </div>

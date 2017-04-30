@@ -7,7 +7,7 @@ export default class CategoryList extends React.Component {
         var indexData = this.props.exclusiveIndexData;
         var origin = this.props.origin;
         var destination = this.props.destination;
-        var year = 2015;
+        var year = this.props.year;
 
         var categoryMap = this.props.categoryMap;
 
@@ -43,6 +43,7 @@ export default class CategoryList extends React.Component {
                                     indexData={indexData}
                                     category={value}
                                     categoryMap={categoryMap}
+                                    year={year}
                                 />
 
                                 )
