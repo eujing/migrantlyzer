@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 
 export default class MigrationBar extends React.Component {
 
@@ -28,4 +29,11 @@ export default class MigrationBar extends React.Component {
             </div>
         )
     }
+}
+
+MigrationBar.propTypes = {
+    origin: PropTypes.string.isRequired,
+    destination: PropTypes.string.isRequired,
+    immigration: PropTypes.number.isRequired,
+    emigration: PropTypes.number.isRequired
 }

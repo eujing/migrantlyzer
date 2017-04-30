@@ -11,7 +11,8 @@ export default class DataDisplay extends React.Component {
 		  	originCountry: "Singapore",
 		  	destinationCountry: "Thailand",
 		  	migrationData: data.migrationData,
-		  	indexData: data.indexData
+		  	indexData: data.indexData,
+		  	categoryMap: categoryMap
 	  	}
 	}
 
@@ -21,7 +22,6 @@ export default class DataDisplay extends React.Component {
 		var exclusiveData = {}
 		exclusiveData[origin] = oldData[origin];
 		exclusiveData[destination] = oldData[destination];
-		console.log("inside");
 		return exclusiveData;
 	}
 
@@ -35,6 +35,9 @@ export default class DataDisplay extends React.Component {
     	var immigration = migrationData[destinationCountry][originCountry];
 
     	var exclusiveIndexData = this.extractIndexData(originCountry, destinationCountry, indexData);
+
+    	var categoryMapProp = this.state.categoryMap;
+
 
 
 
@@ -53,12 +56,20 @@ export default class DataDisplay extends React.Component {
                 	destination={destinationCountry}
                 	exclusiveIndexData={exclusiveIndexData}
                 	/>
-                <CategoryList />
+                <CategoryList 
+                	origin={originCountry}
+                	destination={destinationCountry}
+                	exclusiveIndexData={exclusiveIndexData}
+                	categoryMap={categoryMapProp}
+                	/>
             </div>)
     }
 }
 
-
+var categoryMap = {
+	"Economic": ["GDP per Capita"],
+	"Social": ["Human Development Index", "Average PISA score"]
+}
 
 var data = 	{
 
