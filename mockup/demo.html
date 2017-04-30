@@ -61,7 +61,7 @@
 			}
 			.text_country {
 				color:#474747;
-				font:40px sans-serif;
+				font:28px sans-serif;
 			}
 			.circle_left {
 				fill:none;
@@ -76,6 +76,9 @@
 			.text_count {
 				color:#474747;
 				font 16px sans-serif;
+			}
+			.glyphicon {
+				font-size:50px;
 			}
 		</style>
 	</head>
@@ -96,30 +99,18 @@
 		</div>
 		<div id="display" class="container">
 			<div class="row">
-				<div style="height:20px"/>
+				<div style="height:20px"></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-6 text-center" id="display-left"></div>
-				<div class="col-xs-6 text-center" id = "display-right"></div>
+				<div class="col-xs-5 text-center" id="display-left"></div>
+				<div class="col-xs-2 text-center">
+					<div style="height:50px"></div>
+					<i class="glyphicon glyphicon-arrow-right"></i>
+				</div>
+				<div class="col-xs-5 text-center" id = "display-right"></div>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 text-center" id = "display-center">
-					<div id="accordion" role="tablist">
-						<div class="card">
-							<div class="card-header" role="tab">
-								<a class="collapsed" data-toggle="collapse" 
-									data-parent="#accordion" href="#tabOne">
-									TAB 1
-								</a>
-							</div>
-							<div id="tabOne" class="collapse" role="tabpanel">
-								<div class="card-block">
-									<h1>
-									CONTENT 1
-									</h1>
-								</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -190,23 +181,25 @@
 			var color_upper = "#D7D7D7";
 			var color_lower = "#0F8BDA";
 
-			addCountryStats("China", 300000, "Japan", 3000);
+			addCountryStats("United Kingdom", 640130, "United States of America", 3077);
 
-			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
-			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
-			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
-			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
-			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
-			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
+			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 56430, 43734, 60000);
+			addBarPair(d3.select("#display-center"), "Air Pollution Index", 67, 56, 350);
+			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 56430, 43734, 60000);
+			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 56430, 43734, 60000);
+			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 56430, 43734, 60000);
+			addBarPair(d3.select("#display-center"), "Air Pollution Index", 67, 56, 350);
+			addBarPair(d3.select("#display-center"), "Air Pollution Index", 67, 56, 350);
+			addBarPair(d3.select("#display-center"), "Air Pollution Index", 67, 56, 350);
 			
 			function addCountryStats(country1, count1, country2, count2) {
-				addCountryStat(d3.select("#display-left"), country1, count1, "circle_left");
+				addCountryStat(d3.select("#display-left"), country1, count1, "circle_left", "Emigrants");
 					if (country2 != null && country2.length > 0) {
-						addCountryStat(d3.select("#display-right"), country2, count2, "circle_right");
+						addCountryStat(d3.select("#display-right"), country2, count2, "circle_right", "Immigrants");
 					}
 			}
 
-			function addCountryStat(root, country, count, circ) {
+			function addCountryStat(root, country, count, circ, text){
 				root.append("div").text(country).attr("class", "text_country");
 		 		var c = root.append("svg")
 		 			.attr("width", circle_size)
@@ -214,7 +207,7 @@
 		 		c.append("circle").attr("class", circ)
 					.attr("cx", circle_size/2).attr("cy", circle_size/2)
 					.attr("r", (circle_size/2-5)*Math.log(count)/Math.log(circle_max));
-				root.append("div").text(count).attr("class", "text_count");
+				root.append("div").text(count + " " + text).attr("class", "text_count");
 			}
 
 			function addBarPair(root, text, data_upper, data_lower, data_max) {
