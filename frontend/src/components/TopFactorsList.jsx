@@ -95,7 +95,10 @@ export default class TopFactorsList extends React.Component {
     	var destination = this.props.destination;
 
         if (!indexData || !origin || !destination) {
-            return <h1>No data yet!</h1>
+            return <Row>
+                <h1>Top Pull Factors</h1>
+                <h1>Top Push Factors</h1>
+            </Row>
         }
 
     	var year = 2015;
@@ -109,7 +112,7 @@ export default class TopFactorsList extends React.Component {
         return (
             <Row>
                 <div>
-                    <h4>Top Pull Factors</h4>
+                    <h1>Top Pull Factors</h1>
                     <ul>
                         {
                             topPulls.map(function(name) {
@@ -121,7 +124,7 @@ export default class TopFactorsList extends React.Component {
                     </ul>
                 </div>
                 <div>
-                    <h4>Top Push Factors</h4>
+                    <h1>Top Push Factors</h1>
                     <ul>
                         {
                             topPushes.map(function(name) {
