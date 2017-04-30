@@ -6,7 +6,7 @@ import thunkMiddleware from "redux-thunk"
 import { createLogger } from "redux-logger"
 import { Provider } from "react-redux"
 import { createStore, applyMiddleware } from "redux"
-import { fetchCountryPositions } from "./actions"
+import { fetchCountryPositions, fetchCategoryData } from "./actions"
 import rootReducer from "./reducers"
 import App from "./components/App.jsx"
 
@@ -44,15 +44,12 @@ const unsubscribe = store.subscribe(() => {
 
 store.dispatch(fetchCountryPositions()).then(() => {
     console.log("Country Positions fetched!")
-
-    render(App)
-
-    /* store.dispatch(fetchMigrationData("Singapore", 2015)).then(() => {
-        console.log("SG Migration Data fetched!")
-    }) */ // .then(() => store.dispatch(selectOrigin("Singapore", 2015)))
-    /* store.dispatch(fetchMigrationData("Malaysia", 2015)).then(() => {
-        console.log("MY Migration Data fetched!")
-    }) */
+}).then(() => {
+    store.dispatch(fetchCategoryData()).then(() => {
+        console.log("Category Data fetched!")
+    }).then(() => {
+        render(App)
+    })
 })
 
 unsubscribe()

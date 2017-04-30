@@ -18,11 +18,6 @@ def get_countries(request):
         safe=False, content_type='application/json')
 
 def get_categories(request):
-    return JsonResponse(
-        serialize("json", models.Category.objects.all()),
-        safe=False)
-
-def get_indexes(request):
     if request.method == "GET":
 
         return JsonResponse(
@@ -36,6 +31,18 @@ def get_migrations(request):
 
         queryset = models.MigrationDataPoint.objects.filter(origin__name=country_name, year=year)
 
+
+        return JsonResponse(
+            serialize("json", queryset, use_natural_foreign_keys=True),
+            safe=False)
+
+def get_indexes(request):
+    if request.method == "GET":
+        country = request.GET["country"]
+        year = request.GET["year"]
+
+        queryset = models.IndexDataPoint.objects.filter(
+            country__name=country, year=year)
 
         return JsonResponse(
             serialize("json", queryset, use_natural_foreign_keys=True),

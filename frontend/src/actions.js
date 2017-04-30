@@ -55,3 +55,31 @@ export function fetchMigrationData(country, year) {
                 dispatch(receiveMigrationData(json.map(row => row.fields)))
             })
 }
+
+export const RECEIVE_CATEGORY_DATA = "RECEIVE_CATEGORY_DATA"
+function receiveCategoryData(categoryData) {
+    return { type: RECEIVE_CATEGORY_DATA, categoryData }
+}
+
+export function fetchCategoryData() {
+    return dispatch => fetch("http://localhost:8000/migrantlyzer/category")
+        .then(r => r.json())
+        .then((jsonS) => {
+            const json = JSON.parse(jsonS)
+            dispatch(receiveCategoryData(json.map(row => row.fields)))
+        })
+}
+
+export const RECEIVE_INDEX_DATA = "RECEIVE_INDEX_DATA"
+function receiveIndexData(indexDataPoints) {
+    return { type: RECEIVE_INDEX_DATA, indexDataPoints }
+}
+
+export function fetchIndexData(country, year) {
+    return dispatch => fetch(`http://localhost:8000/migrantlyzer/index?country=${country}&year=${year}`)
+        .then(r => r.json())
+        .then((jsonS) => {
+            const json = JSON.parse(jsonS)
+            dispatch(receiveIndexData(json.map(row => row.fields)))
+        })
+}

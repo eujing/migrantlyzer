@@ -16,14 +16,15 @@ export default class Category extends React.Component {
         var category = this.props.category;
         var categoryMap = this.props.categoryMap;
 
+        console.log(this.props)
         return (
             <ul>
                 <h1>{category}</h1>
                 {
                 	
-                	categoryMap[category].map(function(value, index) {
-                		if (originData[value]) {
-                			return <Factor name={value} origin_value={originData[value][year]["value"]} destination_value={destinationData[value][year]["value"]} />
+                	categoryMap[category].map(function(obj, index) {
+                		if (originData[obj.name]) {
+                			return <Factor name={obj.name} origin_value={originData[obj.name][year]["value"]} destination_value={destinationData[obj.name][year]["value"]} />
                 		}
                 	})
 					
