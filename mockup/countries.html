@@ -6,9 +6,11 @@
 		<script type="text/javascript" src="d3.min.js"></script>
 		<script type="text/javascript" src="topojson.min.js"></script>
 
+		<link rel="stylesheet" href="css/bootstrap.min.css"></link>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<style>
 			#map {
-				background:#F1F1F1;
+				background:#F4F4F4;
 				position:fixed;
 				width:100%;
 				height:80%;
@@ -16,11 +18,10 @@
 				left:0
 			}
 			#outlines {
-				fill:#F9F9F9;
-				stroke:#FFFFFF;
+				fill:#FCFCFC;
+				stroke:#F4F4F4;
 				stroke-linejoin:round;
 				stroke-linecap:round;
-				stroke-width:2px;
 			}
 			.circle {
 				fill:none;
@@ -28,31 +29,100 @@
 			}
 			.route {
 				fill:none;
-				stroke:#FFF;
+				stroke:#0F8BDA;
+				stroke-width:2px;
 			}
 			#display {
+				position:relative;
+				width:100%;
+				height:40%;
+				top:450px;
+				background:#FFFFFF;
+			}
+			#timeline {
 				position:fixed;
 				width:100%;
-				height:30%;
-				top:70%;
+				top:0;
 				left:0;
-				background:black;
+			}
+			.col-xs-2 {
+				color:#474747;
+				font:24px sans-serif;
 			}
 			.barpair .text_head {
-				fill:white;
-				font:18px sans-serrif;
+				fill:#474747;
+				font:18px sans-serif;
 				text-anchor:end;
 			}
 			.barpair .text_tail {
-				fill:white;
-				font:12px sand-serrif;
+				fill:#474747;
+				font:12px sans-serif;
 				text-anchor:start;
+			}
+			.text_country {
+				color:#474747;
+				font:40px sans-serif;
+			}
+			.circle_left {
+				fill:none;
+				stroke:#D7D7D7;
+				stroke-width:6px;
+			}
+			.circle_right {
+				fill:none;
+				stroke:#0F8BDA;
+				stroke-width:6px;
+			}
+			.text_count {
+				color:#474747;
+				font 16px sans-serif;
 			}
 		</style>
 	</head>
 	<body>
 		<div id="map"></div>
-		<div id="display"></div>
+		<div id="timeline" class="container">
+			<div class="row">
+				<div style="height:20px"></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-2 text-center">1990</div>
+				<div class="col-xs-2 text-center">1995</div>
+				<div class="col-xs-2 text-center">2000</div>
+				<div class="col-xs-2 text-center">2005</div>
+				<div class="col-xs-2 text-center">2010</div>
+				<div class="col-xs-2 text-center">2015</div>
+			</div>
+		</div>
+		<div id="display" class="container">
+			<div class="row">
+				<div style="height:20px"/>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 text-center" id="display-left"></div>
+				<div class="col-xs-6 text-center" id = "display-right"></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 text-center" id = "display-center">
+					<div id="accordion" role="tablist">
+						<div class="card">
+							<div class="card-header" role="tab">
+								<a class="collapsed" data-toggle="collapse" 
+									data-parent="#accordion" href="#tabOne">
+									TAB 1
+								</a>
+							</div>
+							<div id="tabOne" class="collapse" role="tabpanel">
+								<div class="card-block">
+									<h1>
+									CONTENT 1
+									</h1>
+								</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<script>
 			var width = $("#map").width(),
@@ -94,25 +164,52 @@
 			var destination = [[-95.71, 37.09], [46.87,-18.77], [103.82,1.35]];
 			var width = [4, 1, 2];
 
-			/*
 			for (i = 0; i < 3; i++) {
 				arc_group.append("path")
 					.datum({type:"LineString", coordinates:[origin, destination[i]]})
 					.attr("class", "route")
 					.attr("d", path)
-					.style({'stroke-width':width[i] + "px"});
-			}*/
+		 			.style("stroke-opacity", width[i]/4);
+					//.style({'stroke-width':width[i] + "px"});
+			}
+
+			var circle_max = 12500000;
+			var circle_size = 100;
 
 			var bar_width = 500;
 			var bar_height = 20;
 			var bar_gap = 5;
-			var bar_border = 150;
+			var bar_border = 200;
 			var barpair_gap = 20;
-			var color_upper = "#666"
-			var color_lower = "#333"
+			var color_upper = "#D7D7D7";
+			var color_lower = "#0F8BDA";
 
-			addBarPair(d3.select("#display"), "GDP per capita ($)", 10000, 8000, 12000);
-			addBarPair(d3.select("#display"), "PISA Index", 450, 346, 488);
+			addCountryStats("China", 300000, "Japan", 3000);
+
+			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
+			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
+			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
+			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
+			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
+			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
+			
+			function addCountryStats(country1, count1, country2, count2) {
+				addCountryStat(d3.select("#display-left"), country1, count1, "circle_left");
+					if (country2 != null && country2.length > 0) {
+						addCountryStat(d3.select("#display-right"), country2, count2, "circle_right");
+					}
+			}
+
+			function addCountryStat(root, country, count, circ) {
+				root.append("div").text(country).attr("class", "text_country");
+		 		var c = root.append("svg")
+		 			.attr("width", circle_size)
+		 			.attr("height", circle_size);
+		 		c.append("circle").attr("class", circ)
+					.attr("cx", circle_size/2).attr("cy", circle_size/2)
+					.attr("r", (circle_size/2-5)*Math.log(count)/Math.log(circle_max));
+				root.append("div").text(count).attr("class", "text_count");
+			}
 
 			function addBarPair(root, text, data_upper, data_lower, data_max) {
 				root.append("div")
