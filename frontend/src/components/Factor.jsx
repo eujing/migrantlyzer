@@ -4,6 +4,8 @@ import d3 from "d3"
 
 let factorID = 0
 
+require("../styles.css")
+
 export default class Factor extends React.Component {
     constructor(props) {
         super(props)
@@ -18,8 +20,8 @@ export default class Factor extends React.Component {
         const barWidth = 500
         const barHeight = 20
         const barBorder = 150
-        const colorUpper = "#666"
-        const colorLower = "#333"
+        const colorUpper = "#D7D7D7"
+        const colorLower = "#0F8BDA"
 
         const svg = root.append("svg")
             .attr("class", "barpair")
