@@ -6,13 +6,23 @@ class Country(models.Model):
     longitude = models.FloatField()
     latitude = models.FloatField()
 
+    def natural_key(self):
+        return self.name
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
+
+    def natural_key(self):
+        return self.name
 
 class Index(models.Model):
     name = models.CharField(max_length=100)
     source = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    max_value = models.FloatField()
+
+    def natural_key(self):
+        return self.name
 
 class IndexDataPoint(models.Model):
     value = models.FloatField()

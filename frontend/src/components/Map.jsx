@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 import d3 from "d3"
 import * as topojson from "topojson"
 
@@ -7,8 +8,8 @@ const mapTopoJson = require("./map.json")
 export default class Map extends React.Component {
     renderMap() {
         const width = document.getElementById("map").offsetWidth
-        const mapWidth = 938
-        const mapHeight = 500
+        const mapWidth = this.props.mapWidth
+        const mapHeight = this.props.mapHeight
         const projection = d3.geo.mercator().scale(150).translate(
             [mapWidth / 2, mapHeight / 1.6])
         this.path = d3.geo.path().projection(projection)
@@ -26,6 +27,12 @@ export default class Map extends React.Component {
             .append("path")
             .attr("id", d => d.id)
             .attr("d", this.path)
+
+        window.resize = () => {
+            const newWidth = document.getElementById("map").offSetWidth
+            this.svg.attr("width", newWidth)
+            this.svg.attr("height", newWidth * (mapHeight / mapWidth))
+        }
     }
 
     addArc(origin, destinations, thicknesses) {
@@ -39,15 +46,40 @@ export default class Map extends React.Component {
                 .attr("class", "route")
                 .attr("d", this.path)
                 .style({ "stroke-width": `${thicknesses[i]}px` })
+                .on("click", d => this.props.onLineClick(d))
         }
     }
 
     componentDidMount() {
         this.renderMap()
-        this.addArc([-3.44, 55.38], [[-95.71, 37.09], [46.87,-18.77], [103.82,1.35]], [4, 1, 2])
+        // this.addArc([-3.44, 55.38], [[-95.71, 37.09], [46.87, -18.77], [103.82, 1.35]], [4, 1, 2])
+        if (this.props.originLongLat && this.props.destinationLongLats && this.props.thicknesses) {
+            this.addArc(
+                this.props.originLongLat,
+                this.props.destinationLongLats,
+                this.props.thicknesses)
+        }
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.originLongLat && nextProps.destinationLongLats && nextProps.thicknesses) {
+            this.addArc(
+                nextProps.originLongLat,
+                nextProps.destinationLongLats,
+                nextProps.thicknesses)
+        }
     }
 
     render() {
         return <div id="map"></div>
     }
+}
+
+Map.propTypes = {
+    mapWidth: PropTypes.number.isRequired,
+    mapHeight: PropTypes.number.isRequired,
+    originLongLat: PropTypes.arrayOf(PropTypes.number),
+    destinationLongLats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+    thicknesses: PropTypes.arrayOf(PropTypes.number),
+    onLineClick: PropTypes.func.isRequired
 }
