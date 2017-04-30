@@ -18,6 +18,11 @@ export function selectDest(country, year) {
     }
 }
 
+export const SELECT_COUNTRY = "SELECT_COUNTRY"
+export function selectCountry(country) {
+    return { type: SELECT_COUNTRY, country }
+}
+
 export const SELECT_YEAR = "SELECT_YEAR"
 export function selectYear(year) {
     return { type: SELECT_YEAR, year }
@@ -29,14 +34,12 @@ function receiveCountryPositions(countries) {
 }
 
 export function fetchCountryPositions() {
-    return (dispatch) => {
-        return fetch("http://localhost:8000/migrantlyzer/country")
+    return dispatch => fetch("http://localhost:8000/migrantlyzer/country")
             .then(r => r.json())
             .then((jsonS) => {
                 const json = JSON.parse(jsonS)
                 dispatch(receiveCountryPositions(json.map(row => row.fields)))
             })
-    }
 }
 
 export const RECEIVE_MIGRATION_DATA = "RECEIVE_MIGRATION_DATA"
@@ -45,63 +48,10 @@ function receiveMigrationData(migrationDataPoints) {
 }
 
 export function fetchMigrationData(country, year) {
-    return (dispatch) => {
-        return fetch(`http://localhost:8000/migrantlyzer/migration?country=${country}&year=${year}`)
+    return dispatch => fetch(`http://localhost:8000/migrantlyzer/migration?country=${country}&year=${year}`)
             .then(r => r.json())
             .then((jsonS) => {
                 const json = JSON.parse(jsonS)
                 dispatch(receiveMigrationData(json.map(row => row.fields)))
             })
-    }
-}
-
-// Example actions for reddit stuff
-export const SELECT_SUBREDDIT = "SELECT_SUBREDDIT"
-
-export function selectSubreddit(subreddit) {
-    return {
-        type: SELECT_SUBREDDIT,
-        subreddit
-    }
-}
-
-export const INVALIDATE_SUBREDDIT = "INVALIDATE_SUBREDDIT"
-
-export function invalidateSubreddit(subreddit) {
-    return {
-        type: INVALIDATE_SUBREDDIT,
-        subreddit
-    }
-}
-
-export const REQUEST_POSTS = "REQUEST_POSTS"
-
-function requestPosts(subreddit) {
-    return {
-        type: REQUEST_POSTS,
-        subreddit
-    }
-}
-
-export const RECEIVE_POSTS = "RECEIVE_POSTS"
-
-function receivePosts(subreddit, json) {
-    return {
-        type: RECEIVE_POSTS,
-        subreddit,
-        posts: json.data.children.map(child => child.data),
-        receivedAt: Date.now()
-    }
-}
-
-export function fetchPosts(subreddit) {
-    return (dispatch) => {
-        dispatch(requestPosts(subreddit))
-
-        return fetch(`https://www.reddit.com/r/${subreddit}.json`)
-            .then(response => response.json())
-            .then((json) => {
-                dispatch(receivePosts(subreddit, json))
-            })
-    }
 }

@@ -27,6 +27,7 @@ export default class Map extends React.Component {
             .append("path")
             .attr("id", d => d.id)
             .attr("d", this.path)
+            .on("click", d => this.props.onCountryClick(d))
 
         window.resize = () => {
             const newWidth = document.getElementById("map").offSetWidth
@@ -36,9 +37,9 @@ export default class Map extends React.Component {
     }
 
     addArc(origin, destinations, thicknesses) {
-        const arcGroup = this.svg.append("g")
+        this.arcGroup = this.svg.append("g")
         for (let i = 0; i < thicknesses.length; i += 1) {
-            arcGroup.append("path")
+            this.arcGroup.append("path")
                 .datum({
                     type: "LineString",
                     coordinates: [origin, destinations[i]]
@@ -50,9 +51,12 @@ export default class Map extends React.Component {
         }
     }
 
+    clearArcs() {
+        this.arcGroup.remove()
+    }
+
     componentDidMount() {
         this.renderMap()
-        // this.addArc([-3.44, 55.38], [[-95.71, 37.09], [46.87, -18.77], [103.82, 1.35]], [4, 1, 2])
         if (this.props.originLongLat && this.props.destinationLongLats && this.props.thicknesses) {
             this.addArc(
                 this.props.originLongLat,
@@ -63,6 +67,9 @@ export default class Map extends React.Component {
 
     componentWillUpdate(nextProps) {
         if (nextProps.originLongLat && nextProps.destinationLongLats && nextProps.thicknesses) {
+            if (this.arcGroup) {
+                this.clearArcs()
+            }
             this.addArc(
                 nextProps.originLongLat,
                 nextProps.destinationLongLats,
@@ -81,5 +88,6 @@ Map.propTypes = {
     originLongLat: PropTypes.arrayOf(PropTypes.number),
     destinationLongLats: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     thicknesses: PropTypes.arrayOf(PropTypes.number),
-    onLineClick: PropTypes.func.isRequired
+    onLineClick: PropTypes.func.isRequired,
+    onCountryClick: PropTypes.func.isRequired
 }

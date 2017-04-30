@@ -1,64 +1,68 @@
 import React from "react"
-import MigrationBar from "./MigrationBar.jsx"
+import MigrationBarContainer from "../containers/MigrationBarContainer.jsx"
 import TopFactorsList from "./TopFactorsList.jsx"
 import CategoryList from "./CategoryList.jsx"
 
 export default class DataDisplay extends React.Component {
 
 	constructor() {
-	  super();
-	  this.state = {
+	  	super();
+	  	this.state = {
 		  	originCountry: "Singapore",
 		  	destinationCountry: "Thailand",
 		  	migrationData: data.migrationData,
-		  	indexData: data.indexData
+		  	indexData: data.indexData,
+		  	categoryMap: categoryMap,
 	  	}
 	}
 
 	extractIndexData(origin, destination, oldData) {
-
-
 		var exclusiveData = {}
 		exclusiveData[origin] = oldData[origin];
 		exclusiveData[destination] = oldData[destination];
-		console.log("inside");
 		return exclusiveData;
 	}
 
     render() {
-    	var migrationData = this.state.migrationData;
-    	var indexData = this.state.indexData;
+    	
     	var originCountry = this.state.originCountry;
     	var destinationCountry = this.state.destinationCountry;
+		var migrationData = this.state.migrationData;
+    	var indexData = this.state.indexData;
+		var categoryMapProp = this.state.categoryMap;
+		var year = this.props.year;
+    	
 
     	var emigration = migrationData[originCountry][destinationCountry];
     	var immigration = migrationData[destinationCountry][originCountry];
 
     	var exclusiveIndexData = this.extractIndexData(originCountry, destinationCountry, indexData);
 
-
-
-
         return (
             <div>
                 <h1>DataDisplay</h1>
-                <MigrationBar 
-                	origin={originCountry}
-                	destination={destinationCountry}
-                	immigration={immigration}
-                	emigration={emigration}
-                	/>
+                <MigrationBarContainer />
                 <TopFactorsList 
                 	origin={originCountry}
                 	destination={destinationCountry}
                 	exclusiveIndexData={exclusiveIndexData}
+                	year={year}
                 	/>
-                <CategoryList />
+                <CategoryList 
+                	origin={originCountry}
+                	destination={destinationCountry}
+                	exclusiveIndexData={exclusiveIndexData}
+                	categoryMap={categoryMapProp}
+                	year={year}
+                	/>
             </div>)
     }
 }
 
-
+var categoryMap = {
+	"Economic": ["GDP per Capita"],
+	"Social": ["Human Development Index", "Average PISA score"]
+}
 
 var data = 	{
 
