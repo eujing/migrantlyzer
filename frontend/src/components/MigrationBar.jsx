@@ -1,10 +1,10 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { Row, Col } from "react-bootstrap"
+
+require("../styles.css")
 
 export default class MigrationBar extends React.Component {
-
-	
-
     render() {
 
 	   	var origin = this.props.origin;
@@ -12,7 +12,31 @@ export default class MigrationBar extends React.Component {
 		var destination = this.props.destination;
 		var immigration = this.props.immigration;
 
+        if (!origin || !destination) {
+            return <h1>No Data Yet</h1>
+        }
+
         return (
+            <Row>
+                <Col xs={6} className={"text-center"} id={"display-left"}>
+                    <div className={"text_country"}>{origin}</div>
+                    <svg width={100} height={100}>
+                        <circle className={"circle-left"} cx={50} cy={50} r={45*Math.log(emigration)/Math.log(12500000)}></circle>
+                    </svg>
+                    <div className={"text_count"}>{emigration}</div>
+                </Col>
+
+                <Col xs={6} className={"text-center"} id={"display-right"}>
+                    <div className={"text_country"}>{destination}</div>
+                        <svg width={100} height={100}>
+                            <circle className={"circle-right"} cx={50} cy={50} r={45*Math.log(immigration)/Math.log(12500000)}></circle>
+                        </svg>
+                    <div className={"text_count"}>{immigration}</div>
+                </Col>
+            </Row>
+        )
+
+        /* return (
             <div>
 	            <p>MigrationBar</p>
 	            	<div>
@@ -35,7 +59,7 @@ export default class MigrationBar extends React.Component {
 	            		</div>
 	            	</div>
             </div>
-        )
+        ) */
     }
 }
 

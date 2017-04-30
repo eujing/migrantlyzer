@@ -1,4 +1,5 @@
 import React from "react"
+import { Row } from "react-bootstrap"
 import PropTypes from "prop-types"
 import Category from "./Category.jsx"
 
@@ -36,10 +37,9 @@ export default class CategoryList extends React.Component {
 
 
         return (
-            <div>
+            <Row>
                 <p>CategoryList</p>
                 <ul>
-                    <li>CategoryList</li>
                     {
                         categoryList.map(function(value) {
                             return (
@@ -56,7 +56,7 @@ export default class CategoryList extends React.Component {
                         })
                     }
                 </ul>
-            </div>)
+            </Row>)
     }
 }
 

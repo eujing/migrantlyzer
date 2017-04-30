@@ -1,4 +1,5 @@
 import React from "react"
+import { Row } from "react-bootstrap"
 
 export default class YearSlider extends React.Component {
 
@@ -10,14 +11,14 @@ export default class YearSlider extends React.Component {
 
     	console.log(yearList);
         return (
-        	<div>
+        	<Row id={"timeline"}>
 	            <h1>YearSlider</h1>
 	            {
 	            	yearList.map((year) => {
 	            		return <div onClick={(e) => this.props.onClick(e)}>{year}</div>
 	            	})
 	            }
-            </div>
+            </Row>
         )
     }
 }

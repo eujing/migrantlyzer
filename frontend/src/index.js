@@ -11,6 +11,7 @@ import rootReducer from "./reducers"
 import App from "./components/App.jsx"
 
 require("./styles.css")
+require("./css/bootstrap.min.css")
 
 // Middleware for redux
 const loggerMiddleware = createLogger()

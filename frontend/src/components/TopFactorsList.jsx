@@ -1,4 +1,5 @@
 import React from "react"
+import { Row } from "react-bootstrap"
 import PropTypes from "prop-types"
 import Factor from "./Factor.jsx"
 
@@ -106,38 +107,33 @@ export default class TopFactorsList extends React.Component {
     	var topPushes = this.extractTopNumberOfPushes(indexData[origin], indexData[destination], factorWeights, year, topNumber);
 
         return (
-            <div>
-                <p>TopFactorsList</p>
-                {(indexData && origin && destination) ?
-                    <div>
-                        <div>
-                            <h4>Top Pull Factors</h4>
-                            <ul>
-                                {
-                                    topPulls.map(function(name) {
-                                        let originValue = indexData[origin][name][year]["value"];
-                                        let destinationValue = indexData[destination][name][year]["value"];
-                                        return <Factor name={name} origin_value={originValue} destination_value={destinationValue} />
-                                    })
-                                }
-                            </ul>
-                        </div>
-                        <div>
-                            <h4>Top Push Factors</h4>
-                            <ul>
-                                {
-                                    topPushes.map(function(name) {
-                                        let originValue = indexData[origin][name][year]["value"];
-                                        let destinationValue = indexData[destination][name][year]["value"];
-                                        
-                                        return <Factor name={name} origin_value={originValue} destination_value={destinationValue} />
-                                    })
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                    : <h1>No data available</h1>}
-            </div>
+            <Row>
+                <div>
+                    <h4>Top Pull Factors</h4>
+                    <ul>
+                        {
+                            topPulls.map(function(name) {
+                                let originValue = indexData[origin][name][year]["value"];
+                                let destinationValue = indexData[destination][name][year]["value"];
+                                return <Factor name={name} origin_value={originValue} destination_value={destinationValue} />
+                            })
+                        }
+                    </ul>
+                </div>
+                <div>
+                    <h4>Top Push Factors</h4>
+                    <ul>
+                        {
+                            topPushes.map(function(name) {
+                                let originValue = indexData[origin][name][year]["value"];
+                                let destinationValue = indexData[destination][name][year]["value"];
+                                
+                                return <Factor name={name} origin_value={originValue} destination_value={destinationValue} />
+                            })
+                        }
+                    </ul>
+                </div>
+            </Row>
             )
     }
 }
