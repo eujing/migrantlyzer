@@ -81,16 +81,14 @@ function migrationData(state = {}, action) {
 function categories(state = {}, action) {
     switch (action.type) {
     case RECEIVE_CATEGORY_DATA:
-        return action.categoryData.reduce((obj, index) => {
-            return { ...obj,
-                [index.category]: [
-                    ...(obj[index.category] ? obj[index.category] : []),
-                    {
-                        name: index.name,
-                        max_value: index.max_value,
-                        source: index.source
-                    }] }
-        }, {})
+        return action.categoryData.reduce((obj, index) => ({ ...obj,
+            [index.category]: [
+                ...(obj[index.category] ? obj[index.category] : []),
+                {
+                    name: index.name,
+                    max_value: index.max_value,
+                    source: index.source
+                }] }), {})
     default:
         return state
     }

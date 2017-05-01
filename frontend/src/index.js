@@ -43,14 +43,10 @@ const unsubscribe = store.subscribe(() => {
     console.log(store.getState())
 })
 
-store.dispatch(fetchCountryPositions()).then(() => {
-    console.log("Country Positions fetched!")
-}).then(() => {
-    store.dispatch(fetchCategoryData()).then(() => {
-        console.log("Category Data fetched!")
-    }).then(() => {
+Promise.all([
+    store.dispatch(fetchCountryPositions()),
+    store.dispatch(fetchCategoryData())]).then(() => {
         render(App)
     })
-})
 
 unsubscribe()

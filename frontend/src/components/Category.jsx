@@ -3,35 +3,32 @@ import Factor from "./Factor.jsx"
 
 export default class Category extends React.Component {
     render() {
+        const indexData = this.props.indexData
 
-    	var indexData = this.props.indexData;
+        const origin = this.props.origin
+        const destination = this.props.destination
 
-        var origin = this.props.origin;
-        var destination = this.props.destination;
+        const originData = indexData[origin]
+        const destinationData = indexData[destination]
+        const year = this.props.year
 
-        var originData = indexData[origin];
-    	var destinationData = indexData[destination];
-        var year = this.props.year;
+        const category = this.props.category
+        const categoryMap = this.props.categoryMap
 
-        var category = this.props.category;
-        var categoryMap = this.props.categoryMap;
-
-        console.log(this.props)
         return (
-            <ul>
+            <div>
                 <h1>{category}</h1>
                 {
-                	
-                	categoryMap[category].map(function(obj, index) {
-                		if (originData[obj.name]) {
-                			return <Factor name={obj.name} origin_value={originData[obj.name][year]["value"]} destination_value={destinationData[obj.name][year]["value"]} />
-                		}
-                	})
-					
-                }
-            </ul>
+                categoryMap[category].map((index, i) => {
+                    if (originData[index.name]) {
+                        return <Factor
+                            key={i}
+                            name={index.name}
+                            origin_value={originData[index.name][year].value}
+                            destination_value={destinationData[index.name][year].value} />
+                    }
+                }) }
+            </div>
         )
     }
 }
-
-//test

@@ -4,8 +4,6 @@ import d3 from "d3"
 
 let factorID = 0
 
-require("../styles.css")
-
 export default class Factor extends React.Component {
     constructor(props) {
         super(props)
@@ -64,7 +62,7 @@ export default class Factor extends React.Component {
         return (
             <div>
                 <div id={this.uid}></div>
-                <div style={{height: "28px"}}></div>
+                <div style={{ height: "28px" }}></div>
             </div>
         )
     }
