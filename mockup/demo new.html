@@ -61,7 +61,7 @@
 			}
 			.text_country {
 				color:#474747;
-				font:40px sans-serif;
+				font:28px sans-serif;
 			}
 			.circle_left {
 				fill:none;
@@ -77,10 +77,13 @@
 				color:#474747;
 				font 16px sans-serif;
 			}
+			.glyphicon {
+				font-size:50px;
+			}
 		</style>
 	</head>
 	<body>
-		<div id="map"></div>
+		<div id="map" onclick="mainClick()"></div>
 		<div id="timeline" class="container">
 			<div class="row">
 				<div style="height:20px"></div>
@@ -96,37 +99,57 @@
 		</div>
 		<div id="display" class="container">
 			<div class="row">
-				<div style="height:20px"/>
+				<div style="height:20px"></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-6 text-center" id="display-left"></div>
-				<div class="col-xs-6 text-center" id = "display-right"></div>
+				<div class="col-xs-5 text-center" id="display-left"></div>
+				<div class="col-xs-2 text-center" id="display-arrow">
+					<div style="height:50px"></div>
+				</div>
+				<div class="col-xs-5 text-center" id = "display-right"></div>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 text-center" id = "display-center">
-					<div id="accordion" role="tablist">
-						<div class="card">
-							<div class="card-header" role="tab">
-								<a class="collapsed" data-toggle="collapse" 
-									data-parent="#accordion" href="#tabOne">
-									TAB 1
-								</a>
-							</div>
-							<div id="tabOne" class="collapse" role="tabpanel">
-								<div class="card-block">
-									<h1>
-									CONTENT 1
-									</h1>
-								</div>
-						</div>
-					</div>
 				</div>
+			</div>
+			<div class="row">
+				<div style="height:300px"></div>
 			</div>
 		</div>
 
 		<script>	
 			function onClick(year) {
 				console.log(year);
+			}
+
+			var stage = 0;
+			
+			function mainClick() {
+				if (stage > 1) return;
+				else if (stage == 0) {
+					var arc_group = svg.append("g");
+					var origin = [-3.44, 55.38];
+					var destination = [[-95.71, 37.09], [46.87,-18.77], [103.82,1.35],[27.98,53.71],[-51.9,-14.2], [-24.0,16],[104.2, 35.9],[2.2,46.2],[10.5,51.2],[103.2,36.2],[133.77,-25.27],[-106.3,56.1],[-102.5,23.6],[138.2,36.2]];
+					var width = [4, 1, 2, 1, 0.5, 1,2,3,4.5,1,2,1.5,1,1];
+
+					for (i = 0; i < 12; i++) {
+						arc_group.append("path")
+							.datum({type:"LineString", coordinates:[origin, destination[i]]})
+							.attr("class", "route")
+							.attr("d", path)
+							.style("stroke-opacity", width[i]/4);
+							//.style({'stroke-width':width[i] + "px"});
+					}
+				} else if (stage == 1) {
+					addCountryStats("United Kingdom", 640130, "United States of America", 3077);
+					addBarPair(d3.select("#display-center"), "GDP per capita ($)", 19095, 23954, 28000);
+					addBarPair(d3.select("#display-center"), "HDI", 0.775, 0.86, 1);
+					addBarPair(d3.select("#display-center"), "Life Expectancy", 75.88, 75.21, 85);
+					addBarPair(d3.select("#display-center"), "World Risk Index", 3.54, 3.76, 4);
+					addBarPair(d3.select("#display-center"), "Air Pollution Index", 56, 67, 350);
+					d3.select("#display-arrow").append("i").attr("class", "glyphicon glyphicon-arrow-right");
+				}
+				stage++;
 			}
 		</script>
 
@@ -165,6 +188,7 @@
 				.attr("cy", function(d) {return projection(d)[1];})
 				.attr("r", 2);
 
+			/*
 			var arc_group = svg.append("g");
 			var origin = [-3.44, 55.38];
 			var destination = [[-95.71, 37.09], [46.87,-18.77], [103.82,1.35]];
@@ -177,7 +201,7 @@
 					.attr("d", path)
 		 			.style("stroke-opacity", width[i]/4);
 					//.style({'stroke-width':width[i] + "px"});
-			}
+			}*/
 
 			var circle_max = 12500000;
 			var circle_size = 100;
@@ -190,23 +214,19 @@
 			var color_upper = "#D7D7D7";
 			var color_lower = "#0F8BDA";
 
-			addCountryStats("China", 300000, "Japan", 3000);
+			//addCountryStats("United Kingdom", 640130, "United States of America", 3077);
 
-			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
-			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
-			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
-			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
-			addBarPair(d3.select("#display-center"), "GDP per capita ($)", 10000, 8000, 12000);
-			addBarPair(d3.select("#display-center"), "PISA Index", 450, 346, 488);
+			//addBarPair(d3.select("#display-center"), "GDP per capita ($)", 56430, 43734, 60000);
+			//addBarPair(d3.select("#display-center"), "Air Pollution Index", 67, 56, 350);
 			
 			function addCountryStats(country1, count1, country2, count2) {
-				addCountryStat(d3.select("#display-left"), country1, count1, "circle_left");
+				addCountryStat(d3.select("#display-left"), country1, count1, "circle_left", "Emigrants");
 					if (country2 != null && country2.length > 0) {
-						addCountryStat(d3.select("#display-right"), country2, count2, "circle_right");
+						addCountryStat(d3.select("#display-right"), country2, count2, "circle_right", "Immigrants");
 					}
 			}
 
-			function addCountryStat(root, country, count, circ) {
+			function addCountryStat(root, country, count, circ, text){
 				root.append("div").text(country).attr("class", "text_country");
 		 		var c = root.append("svg")
 		 			.attr("width", circle_size)
@@ -214,7 +234,7 @@
 		 		c.append("circle").attr("class", circ)
 					.attr("cx", circle_size/2).attr("cy", circle_size/2)
 					.attr("r", (circle_size/2-5)*Math.log(count)/Math.log(circle_max));
-				root.append("div").text(count).attr("class", "text_count");
+				root.append("div").text(count + " " + text).attr("class", "text_count");
 			}
 
 			function addBarPair(root, text, data_upper, data_lower, data_max) {
