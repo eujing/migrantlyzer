@@ -10,11 +10,15 @@ export default class TopFactorsList extends React.Component {
         const factorsWeights = {}
         const factorsList = Object.keys(destinationData)
         factorsList.forEach((value) => {
-            if (!destinationData[value][year]) {
+            if (!destinationData[value][year] || destinationData[value][year].rank == 0) {
                 console.log(`${year} index data for ${this.props.destination} not available!`, destinationData[value])
+                factorsWeights[value] = 0
+                return 0
             }
-            if (!originData[value][year]) {
+            if (!originData[value][year] || originData[value][year].rank == 0) {
                 console.log(`${year} index data for ${this.props.origin} not available!`, originData[value])
+                factorsWeights[value] = 0
+                return 0
             }
             const weight = destinationData[value][year].rank - originData[value][year].rank
             factorsWeights[value] = weight
@@ -111,8 +115,8 @@ export default class TopFactorsList extends React.Component {
         const topNumber = 2
 
         const factorWeights = this.extractFactorWeights(indexData[origin], indexData[destination], year)
-        const topPulls = this.extractTopNumberOfPulls(indexData[origin], indexData[destination], factorWeights, year, topNumber)
-        const topPushes = this.extractTopNumberOfPushes(indexData[origin], indexData[destination], factorWeights, year, topNumber)
+        const topPulls = this.extractTopNumberOfPushes(indexData[origin], indexData[destination], factorWeights, year, topNumber)
+        const topPushes = this.extractTopNumberOfPulls(indexData[origin], indexData[destination], factorWeights, year, topNumber)
 
         return (
             <Row>

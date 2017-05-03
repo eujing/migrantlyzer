@@ -6,7 +6,7 @@ import thunkMiddleware from "redux-thunk"
 import { createLogger } from "redux-logger"
 import { Provider } from "react-redux"
 import { createStore, applyMiddleware } from "redux"
-import { fetchCountryPositions, fetchCategoryData } from "./actions"
+import { fetchCountryPositions, fetchCategoryData, selectCountry, fetchMigrationData, fetchIndexData } from "./actions"
 import rootReducer from "./reducers"
 import App from "./components/App.jsx"
 
@@ -47,6 +47,10 @@ Promise.all([
     store.dispatch(fetchCountryPositions()),
     store.dispatch(fetchCategoryData())]).then(() => {
         render(App)
+        /* Promise.all([
+            store.dispatch(fetchMigrationData("Singapore")),
+            store.dispatch(fetchIndexData("Singapore"))]).then(() => store.dispatch(selectCountry("Singapore")))
+        */
     })
 
 unsubscribe()

@@ -17,7 +17,7 @@ export default class Factor extends React.Component {
 
         const barWidth = 500
         const barHeight = 20
-        const barBorder = 150
+        const barBorder = 330
         const colorUpper = "#D7D7D7"
         const colorLower = "#0F8BDA"
 

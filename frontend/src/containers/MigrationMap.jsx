@@ -24,8 +24,8 @@ const mapStateToProps = (state) => {
                 state.countryPositions[pair[0]]
             ),
         thicknesses: dest ?
-            [Math.sqrt(state.migrationData[year][origin][dest]) / 15] :
-            Object.entries(state.migrationData[year][origin]).map(pair => Math.sqrt(pair[1]) / 15)
+        [Math.pow(state.migrationData[year][origin][dest], 1/3) / 43] :
+        Object.entries(state.migrationData[year][origin]).map(pair => Math.pow(pair[1], 1/3) / 43)
     }
 }
 
