@@ -135,7 +135,8 @@ public class Matcher {
 				for (int j = 1; j < list.get(i).size(); j++) {
 					int value = 0;
 					try {
-						value = Integer.parseInt(list.get(i).get(j));
+						String string = list.get(i).get(j);
+						value = Integer.parseInt(string.replaceAll("\\s+",""));
 					} catch (Exception e) {}
 					int index_from = mapping.get(i-1);
 					int index_to = mapping.get(j-1);
@@ -185,9 +186,11 @@ public class Matcher {
 			boolean dir = INDEX_DIR[ind];
 
 			ArrayList<Datum> a = new ArrayList<>();
+			int count = 0;
 			for (int j = 0; j < countries.size()-1; j++) {
 				if (data.get(i).get(j) != 0 ) {
 					a.add(new Datum(j, data.get(i).get(j)));
+					count++;
 				} else {
 					a.add(new Datum(j, dir ? 0f : Float.MAX_VALUE));
 				}
@@ -213,7 +216,7 @@ public class Matcher {
 					prev = d.value;
 					pos = j+1;
 				}
-				ranks.get(i).set(d.index, pos);
+				ranks.get(i).set(d.index, (int)Math.round((1000f*(count+1-pos))/(count)));
 			}
 		}
 	}
