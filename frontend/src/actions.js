@@ -1,20 +1,18 @@
 import fetch from "isomorphic-fetch"
 
 export const SELECT_ORIGIN = "SELECT_ORIGIN"
-export function selectOrigin(country, year) {
+export function selectOrigin(country) {
     return {
         type: SELECT_ORIGIN,
         country,
-        year
     }
 }
 
 export const SELECT_DEST = "SELECT_DEST"
-export function selectDest(country, year) {
+export function selectDest(country) {
     return {
         type: SELECT_DEST,
         country,
-        year
     }
 }
 
@@ -24,7 +22,7 @@ export function selectCountry(country) {
 }
 
 export const SELECT_YEAR = "SELECT_YEAR"
-export function selectYear(year) {
+function selectYear(year) {
     return { type: SELECT_YEAR, year }
 }
 
@@ -48,12 +46,15 @@ function receiveMigrationData(migrationDataPoints) {
 }
 
 export function fetchMigrationData(country, year) {
-    return dispatch => fetch(`http://localhost:8000/migrantlyzer/migration?country=${country}&year=${year}`)
+    return (dispatch, getState) => {
+        const queryYear = year || getState().selectedOptions.year
+        return fetch(`http://localhost:8000/migrantlyzer/migration?country=${country}&year=${queryYear}`)
             .then(r => r.json())
             .then((jsonS) => {
                 const json = JSON.parse(jsonS)
                 dispatch(receiveMigrationData(json.map(row => row.fields)))
             })
+    }
 }
 
 export const RECEIVE_CATEGORY_DATA = "RECEIVE_CATEGORY_DATA"
@@ -76,10 +77,33 @@ function receiveIndexData(indexDataPoints) {
 }
 
 export function fetchIndexData(country, year) {
-    return dispatch => fetch(`http://localhost:8000/migrantlyzer/index?country=${country}&year=${year}`)
-        .then(r => r.json())
-        .then((jsonS) => {
-            const json = JSON.parse(jsonS)
-            dispatch(receiveIndexData(json.map(row => row.fields)))
-        })
+    return (dispatch, getState) => {
+        const queryYear = year || getState().selectedOptions.year
+        return fetch(`http://localhost:8000/migrantlyzer/index?country=${country}&year=${queryYear}`)
+            .then(r => r.json())
+            .then((jsonS) => {
+                const json = JSON.parse(jsonS)
+                dispatch(receiveIndexData(json.map(row => row.fields)))
+            })
+    }
+}
+
+export function changeYear(year) {
+    return (dispatch, getState) => {
+        const state = getState()
+        const origin = state.selectedOptions.origin
+        const destination = state.selectedOptions.destination
+        const promises = []
+
+        if (origin) {
+            promises.push(dispatch(fetchMigrationData(origin, year)))
+            promises.push(dispatch(fetchIndexData(origin, year)))
+        }
+        if (destination) {
+            promises.push(dispatch(fetchMigrationData(destination, year)))
+            promises.push(dispatch(fetchIndexData(destination, year)))
+        }
+
+        Promise.all(promises).then(() => dispatch(selectYear(year)))
+    }
 }

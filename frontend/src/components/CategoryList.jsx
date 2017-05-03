@@ -1,5 +1,5 @@
 import React from "react"
-import { Row, Col } from "react-bootstrap"
+import { Row, Col, Accordion } from "react-bootstrap"
 import PropTypes from "prop-types"
 import Category from "./Category.jsx"
 
@@ -13,8 +13,6 @@ export default class CategoryList extends React.Component {
 
         var categoryMap = this.props.categoryMap;
 
-        console.log(this.props)
-
         if (!origin || !destination) {
             return <Row>
                 <Col xs={12} className={"text-center"}><h1>Index Categories</h1></Col>
@@ -24,41 +22,34 @@ export default class CategoryList extends React.Component {
         var originData = indexData[origin];
         var destinationData = indexData[destination];
 
-        for (var category in categoryMap) {
-            console.log("This is a category");
-            console.log(category);
-        };
-
         var categoryList = [];
 
         for (var category in categoryMap) {
             categoryList.push(category);
         };
 
-        console.log(categoryList)
-
-
         return (
             <Row>
                 <Col xs={12} className="text-center">
-                    <h1>Index Categories</h1>
-                    <ul>
+                    <Accordion>
+                        {/*<h1>Index Categories</h1>*/}
                         {
-                            categoryList.map(function(value) {
+                            categoryList.map(function(value, i) {
                                 return (
-                                    <Category 
+                                    <Category
                                         origin={origin}
                                         destination={destination}
                                         indexData={indexData}
                                         category={value}
                                         categoryMap={categoryMap}
                                         year={year}
+                                        key={i}
                                     />
 
                                     )
                             })
                         }
-                    </ul>
+                </Accordion>
                 </Col>
             </Row>)
     }

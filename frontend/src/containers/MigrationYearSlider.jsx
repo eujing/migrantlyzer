@@ -1,6 +1,6 @@
 import { connect } from "react-redux"
 import YearSlider from "../components/YearSlider.jsx"
-import selectYear from "../actions"
+import { changeYear } from "../actions"
 
 const mapStateToProps = () => {
     return {}
@@ -8,9 +8,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClick: () => {
-            return dispatch(selectYear())
-        }
+        onClick: year => dispatch(changeYear(year))
     }
 }
 

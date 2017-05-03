@@ -17,21 +17,19 @@ const mapStateToProps = (state) => {
     return {
         mapWidth,
         mapHeight,
-        originLongLat: origin && state.countryPositions[origin],
+        originLongLat: state.countryPositions[origin],
         destinationLongLats: dest ?
             [state.countryPositions[dest]] :
-            Object.entries(state.migrationData[year][origin]).map((pair) => {
-                return state.countryPositions[pair[0]]
-            }),
+        Object.entries(state.migrationData[year][origin]).map(pair =>
+                state.countryPositions[pair[0]]
+            ),
         thicknesses: dest ?
             [Math.sqrt(state.migrationData[year][origin][dest]) / 15] :
-            Object.entries(state.migrationData[year][origin]).map((pair) => {
-            return Math.sqrt(pair[1]) / 15
-        })
+            Object.entries(state.migrationData[year][origin]).map(pair => Math.sqrt(pair[1]) / 15)
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         onLineClick: (lineData) => {
             const destLongLat = lineData.coordinates[1]
@@ -40,9 +38,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         onCountryClick: (countryData) => {
             console.log(countryData)
             const country = countryData.properties.name
-            dispatch(fetchMigrationData(country, 2015)).then(() =>
-                dispatch(fetchIndexData(country, 2015)).then(() =>
-                    dispatch(selectCountry(country))))
+            Promise.all([
+                dispatch(fetchMigrationData(country)),
+                dispatch(fetchIndexData(country))]).then(() =>
+                    dispatch(selectCountry(country)))
         }
     }
 }

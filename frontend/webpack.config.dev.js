@@ -3,7 +3,7 @@ const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
-    devtool: "cheap-eval-source-map",
+    devtool: "source-map",
     entry: [
         "react-hot-loader/patch",
         "webpack-dev-server/client?http://localhost:8080",
@@ -39,7 +39,7 @@ module.exports = {
             loaders: ["json-loader"]
         }, {
             test: /\.(eot|svg|ttf|woff|woff2)$/,
-            loader:'file-loader?name=/fonts/[name].[ext]'
+            loader: "file-loader?name=/fonts/[name].[ext]"
         }
         ]
     },
