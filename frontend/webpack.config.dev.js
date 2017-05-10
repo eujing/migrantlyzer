@@ -17,6 +17,10 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             template: "./src/index.html"
+        }),
+        new webpack.DefinePlugin({
+            "process.env.NODE_ENV": JSON.stringify("development"),
+            API_URL: JSON.stringify("localhost:8000")
         })
     ],
     module: {

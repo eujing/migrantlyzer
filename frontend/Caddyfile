@@ -1,0 +1,5 @@
+128.199.91.151:8080 {
+    root ./dist
+    gzip
+    log ./caddy_access.log
+}

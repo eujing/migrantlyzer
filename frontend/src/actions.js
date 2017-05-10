@@ -32,7 +32,7 @@ function receiveCountryPositions(countries) {
 }
 
 export function fetchCountryPositions() {
-    return dispatch => fetch("http://localhost:8000/migrantlyzer/country")
+    return dispatch => fetch(`http://${API_URL}/migrantlyzer/country`)
             .then(r => r.json())
             .then((jsonS) => {
                 const json = JSON.parse(jsonS)
@@ -48,7 +48,7 @@ function receiveMigrationData(migrationDataPoints) {
 export function fetchMigrationData(country, year) {
     return (dispatch, getState) => {
         const queryYear = year || getState().selectedOptions.year
-        return fetch(`http://localhost:8000/migrantlyzer/migration?country=${country}&year=${queryYear}`)
+        return fetch(`http://${API_URL}/migrantlyzer/migration?country=${country}&year=${queryYear}`)
             .then(r => r.json())
             .then((jsonS) => {
                 const json = JSON.parse(jsonS)
@@ -63,7 +63,7 @@ function receiveCategoryData(categoryData) {
 }
 
 export function fetchCategoryData() {
-    return dispatch => fetch("http://localhost:8000/migrantlyzer/category")
+    return dispatch => fetch(`http://${API_URL}/migrantlyzer/category`)
         .then(r => r.json())
         .then((jsonS) => {
             const json = JSON.parse(jsonS)
@@ -79,7 +79,7 @@ function receiveIndexData(indexDataPoints) {
 export function fetchIndexData(country, year) {
     return (dispatch, getState) => {
         const queryYear = year || getState().selectedOptions.year
-        return fetch(`http://localhost:8000/migrantlyzer/index?country=${country}&year=${queryYear}`)
+        return fetch(`http://${API_URL}/migrantlyzer/index?country=${country}&year=${queryYear}`)
             .then(r => r.json())
             .then((jsonS) => {
                 const json = JSON.parse(jsonS)
